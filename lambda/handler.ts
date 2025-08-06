@@ -9,7 +9,7 @@ import { createHash } from "crypto";
 
 const client = new DynamoDBClient({});
 const docClient = DynamoDBDocumentClient.from(client);
-const tableName = "urlMapping";
+const tableName = "urlMappingV2";
 
 export const handler = async (
   event: APIGatewayProxyEvent

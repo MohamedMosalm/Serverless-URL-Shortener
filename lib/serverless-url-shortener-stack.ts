@@ -41,14 +41,20 @@ export class ServerlessUrlShortenerStack extends cdk.Stack {
       .addMethod("GET", new apigateway.LambdaIntegration(shortnerFn));
 
     const dtable = new cdk.aws_dynamodb.TableV2(this, "UrlShortenerTable", {
-      tableName: "urlMapping",
+      tableName: "urlMappingV2",
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       billing: cdk.aws_dynamodb.Billing.onDemand(),
       partitionKey: {
-        name: "short_url",
+        name: "shortUrl",
         type: cdk.aws_dynamodb.AttributeType.STRING,
       },
     });
     dtable.grantReadWriteData(shortnerFn);
+
+    // Output the API URL
+    new cdk.CfnOutput(this, "ApiUrl", {
+      value: urlShortenerApi.url,
+      description: "URL Shortener API Gateway URL",
+    });
   }
 }
